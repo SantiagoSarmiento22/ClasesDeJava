@@ -4,11 +4,7 @@ public interface ICustomerPath {
 
 
         String URL_BASE = "/customers";
-        String CREATE_CUSTOMER = "/create";
-        String GET_CUSTOMER = "/{document}";
-        String UPDATE_CUSTOMER = "/update/{document}";
-        String DELETE_CUSTOMER = "/delete/{document}";
-        String GET_LIST = "/getAllCustomers";
+        String CUSTOMER_ID_PARAM = "/{document}";
         String GET_LISTSORT ="/sortedCustomers";
 
 }
