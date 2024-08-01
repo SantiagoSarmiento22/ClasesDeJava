@@ -17,43 +17,43 @@ public class CustomerController {
         @Autowired
         private ICustomerService customerService;
 
-        @PostMapping(ICustomerPath.CREATE_CUSTOMER)
-        public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerRequest) {
-            CustomerDTO resultado = customerService.createCustomer(customerRequest);
+        @PostMapping()
+        public ResponseEntity<CustomerDTO> createCustomer(@RequestBody final CustomerDTO customerRequest) {
+            final CustomerDTO resultado = this.customerService.createCustomer(customerRequest);
             return new ResponseEntity<>(resultado, HttpStatus.CREATED);
         }
 
-        @GetMapping(ICustomerPath.GET_LIST)
+        @GetMapping()
         public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-            List<CustomerDTO> customers = customerService.getAllCustomers();
+            final List<CustomerDTO> customers = this.customerService.getAllCustomers();
             return new ResponseEntity<>(customers, HttpStatus.OK);
         }
 
-        @GetMapping(ICustomerPath.GET_CUSTOMER)
-        public ResponseEntity<CustomerDTO> getCustomer(@PathVariable String document) {
-            CustomerDTO customerResponse = customerService.getCustomer(document);
+        @GetMapping(ICustomerPath.CUSTOMER_ID_PARAM)
+        public ResponseEntity<CustomerDTO> getCustomer(@PathVariable final String document) {
+            final CustomerDTO customerResponse = this.customerService.getCustomer(document);
             return new ResponseEntity<>(customerResponse, HttpStatus.OK);
         }
 
-        @DeleteMapping(ICustomerPath.DELETE_CUSTOMER)
-        public ResponseEntity<Void> deleteCustomer(@PathVariable String document) {
-            customerService.deleteCustomer(document);
+        @DeleteMapping(ICustomerPath.CUSTOMER_ID_PARAM)
+        public ResponseEntity<Void> deleteCustomer(@PathVariable final String document) {
+            this.customerService.deleteCustomer(document);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        @PutMapping(ICustomerPath.UPDATE_CUSTOMER)
-        public ResponseEntity<Void> updateCustomer(@PathVariable String document, @RequestBody CustomerDTO customerRequest) {
-            customerService.updateCustomer(document, customerRequest);
+        @PutMapping(ICustomerPath.CUSTOMER_ID_PARAM)
+        public ResponseEntity<Void> updateCustomer(@PathVariable final String document, @RequestBody final CustomerDTO customerRequest) {
+            this.customerService.updateCustomer(document, customerRequest);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
     @GetMapping(ICustomerPath.GET_LISTSORT)
     public ResponseEntity<List<CustomerDTO>> getSortedCustomers(
-            @RequestParam(required = false) String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String order,
-            @RequestParam(required = false) String document,
-            @RequestParam(required = false) String name) {
-        List<CustomerDTO> customers = customerService.getSortedCustomers(sortBy, order, document, name);
+            @RequestParam(required = false) final String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") final String order,
+            @RequestParam(required = false) final String document,
+            @RequestParam(required = false) final String name) {
+        final List<CustomerDTO> customers = this.customerService.getSortedCustomers(sortBy, order, document, name);
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
     }
