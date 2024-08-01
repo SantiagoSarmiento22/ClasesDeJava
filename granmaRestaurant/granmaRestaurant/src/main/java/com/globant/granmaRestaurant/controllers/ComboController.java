@@ -12,33 +12,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(IComboPath.URL_BASE)
 public class ComboController {
 
-    @Autowired
-    private IComboService comboService;
+	@Autowired
+	private IComboService comboService;
 
+	@PostMapping
+	ResponseEntity<ComboDTO> createCombo(@RequestBody final ComboDTO comboDTO) {
+		final ComboDTO createCombo = this.comboService.createCombo(comboDTO);
+		return new ResponseEntity<>(createCombo, HttpStatus.CREATED);
+	}
+	@GetMapping(IComboPath.UUID)
+	ResponseEntity<ComboDTO> getCombo(@PathVariable final String uuid) {
+		final ComboDTO getComboUuid = this.comboService.getCombo(uuid);
+		return new ResponseEntity<>(getComboUuid, HttpStatus.OK);
+	}
+	@PutMapping(IComboPath.UUID)
+	ResponseEntity<Void> updateCombo(@PathVariable final String uuid, @RequestBody final ComboDTO comboDTO) {
+		this.comboService.updateCombo(uuid, comboDTO);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-    @PostMapping(IComboPath.CREATE_COMBO)
-    ResponseEntity<ComboDTO> createCombo(@RequestBody ComboDTO comboDTO) {
-        ComboDTO createCombo = comboService.createCombo(comboDTO);
-        return new ResponseEntity<>(createCombo, HttpStatus.CREATED);
-    }
-    @GetMapping(IComboPath.GET_CUSTOMER)
-    ResponseEntity<ComboDTO> getCombo (@PathVariable String uuid){
-        ComboDTO getComboUuid = comboService.getCombo(uuid);
-        return new ResponseEntity<>(getComboUuid, HttpStatus.OK);
-    }
-        @PutMapping(IComboPath.UPDATE_CUSTOMER)
-    ResponseEntity<Void> updateCombo(@PathVariable String uuid, @RequestBody ComboDTO comboDTO){
-        comboService.updateCombo(uuid,comboDTO);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
-    }
-
-    @DeleteMapping(IComboPath.DELETE_CUSTOMER)
-    ResponseEntity<Void> comboDelete(@PathVariable String uuid){
-        comboService.deleteCombo(uuid);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
+	@DeleteMapping(IComboPath.UUID)
+	ResponseEntity<Void> comboDelete(@PathVariable final String uuid) {
+		this.comboService.deleteCombo(uuid);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
 }
