@@ -51,7 +51,7 @@ public class ComboServiceImpl implements IComboService {
 		final ComboDTO comboDTO = comboPetition.map(this.mapper::comboConvertToDTO)
 				.orElseThrow(() -> new CustomException(ExceptionCode.COMBO_NOT_FOUND, LocalDateTime.now(),
 						HttpStatus.NOT_FOUND, "Combo con UUID: " + uuid + " no encontrado."));
-		comboDTO.setBase64Image(this.comboRepositoryRedis.findById(uuid).map(ComboAttachment::getBase64Image).orElse(null));
+		comboDTO.setBase64Image(this.comboRepositoryRedis.findById(uuid).map(ComboAttachment::getBase64Image).orElse(""));
 		return comboDTO;
 	}
 

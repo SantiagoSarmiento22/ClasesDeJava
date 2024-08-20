@@ -5,7 +5,9 @@ import com.globant.granmaRestaurant.exception.custonException.CustomException;
 import com.globant.granmaRestaurant.mapper.ComboMapperImpl;
 import com.globant.granmaRestaurant.model.DTO.ComboDTO;
 import com.globant.granmaRestaurant.model.entity.ComboEntity;
+import com.globant.granmaRestaurant.model.entity.redis.ComboAttachment;
 import com.globant.granmaRestaurant.repositories.ComboRepository;
+import com.globant.granmaRestaurant.repositories.redis.RedisComboRepository;
 import com.globant.granmaRestaurant.services.IServices.IComboService;
 import com.globant.granmaRestaurant.services.validators.ComboValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +34,9 @@ public class ComboServiceImplTest {
 
 	@Mock
 	private ComboValidator comboValidator;
+
+	@Mock
+	private RedisComboRepository comboRepositoryRedis;
 
 	@InjectMocks
 	private ComboServiceImpl service;
@@ -92,13 +97,19 @@ public class ComboServiceImplTest {
 		comboEntity.setPrice(18.990);
 		comboEntity.setAvailable(true);
 		comboEntity.setActive(true);
+
+		final ComboAttachment comboAttachment = ComboAttachment.builder().base64Image("A").build();
+
 		when(this.comboRepository.findByUuid(comboIdTest)).thenReturn(Optional.of(comboEntity));
 		when(this.mapper.comboConvertToDTO(comboEntity)).thenCallRealMethod();
+		when(this.comboRepositoryRedis.findById(any())).thenReturn(Optional.of(comboAttachment));
+
 		//When
 		final ComboDTO combo = this.service.getCombo(comboIdTest);
 		//Then
 		assertNotNull(combo);
 		assertEquals(comboEntity.getFantasyName(), combo.getFantasyName());
+		assertEquals(combo.getBase64Image(), "A");
 	}
 
 
